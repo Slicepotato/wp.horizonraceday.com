@@ -1,0 +1,23 @@
+name: Deploy to Dreamhost Production
+
+on:
+  push:
+    branches: 
+      - production
+
+jobs:
+  prod-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Production Sync
+        uses: SamKirkland/FTP-Deploy-Action@4.1.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./${{ secrets.THEME_NAME }}/
+          server-dir: ${{ secrets.FTP_SERVER }}/wp-content/themes/${{ secrets.THEME_NAME }}/
+          protocol: ftp
+          security: loose
+          port: 21
